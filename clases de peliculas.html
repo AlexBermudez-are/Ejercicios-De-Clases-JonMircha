@@ -1,0 +1,204 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+
+
+        class Peliculas {
+            constructor({id, titulo, director, anioEstreno, pais, genero,calificacion}){
+                this.id = id,
+                this.titulo = titulo,
+                this.director = director,
+                this.anioEstreno = anioEstreno,
+                this.pais = pais,
+                this.genero = genero,
+                this.calificacion = calificacion
+                ////////////////////////////////////////
+                this.validarId(id)
+                this.validarTit(titulo)
+                this.validarDir(director)
+                this.valAnioEstreno(anioEstreno)
+                this.valPais(pais)
+                this.valGen(genero)
+                this.valCalificacion(calificacion)
+            }
+
+            ///========> validaciones de errores vacios o de sintaxis<===========///
+            validarNumero(propiedad,valor){
+                if(!valor) return console.error(`no se ingresaron todos los datos de la(s) pelicula(s) ${propiedad}`);
+                if(typeof(valor) !== "number") return console.error(`el valor ingresado no es un numero`);
+                return true
+            }
+            
+            validarCampo(propiedad,valor){
+                if(!valor) return console.error(`no se ingresaron todos los datos de la(s) pelicula(s) ${propiedad}`);
+                if(typeof (valor) !== "string") return console.error(`el valor ${valor} ingresado no es una cadena de texto`);
+                return true
+            }
+            validarLargoCadena(propiedad,valor,longitud){
+                if(!valor ) return false
+                if(valor.length > longitud) return console.warn("el titulo es demasiado largo")
+                if(valor.length <= 1) return console.warn("el titulo no puede ser demasiado corto");
+                return true
+            }
+            validarArreglo(propiedad,valor){
+                if(!valor) return console.error(`no se ingresaron todos los datos de la(s) pelicula(s) ${propiedad}`);
+                if(!(valor instanceof Array)) return console.error(`el valor ingresado tiene que ser un arreglo`)
+                if(valor.length === 0) return console.warn("el arreglo esta vacio");
+                        for (const key of valor) {
+                        if(typeof(key) !== "string") return console.error(`el valor ${valor} no es un ${propiedad}`);
+                    }
+                return true
+            }
+            ///========> Generos Aceptados <==========///
+
+            static get generosAceptados(){
+                return ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary" ,
+            "Drama", "Family","Fantasy", "Film Noir", "Game-Show", "History", "Horror", "Musical", "Music", "Mystery", "News", 
+            "Reality-TV", "Romance", "Sci-Fi", "Short", "Sport", "Talk-Show", "Thriller", "War", "Western"]}
+            
+            static generosReturn(){
+                return console.log(`${Peliculas.generosAceptados.join(", ")}`)
+            }
+            
+            
+            ///========> validaciones de errores introducidos<===========///
+            validarId(id){
+                if(this.validarCampo("id:",id)){
+                    if(id.length > 9 || id.length < 9) return console.warn(`el valor ${id} ingresado no puede ser mayor a 9 ni menor a 1`);
+                    if(!/^([a-z]{2}([0-9]){7})$/.test(id)) return console.warn(`el id ${id} tiene que contener 2 numeros y 7 letras`);
+                }
+            }
+            validarTit(titulo){
+                if(this.validarCampo("titulo:", titulo)){
+                }if(this.validarLargoCadena("titulo:",titulo,50)){}
+            }
+            validarDir(director){
+                if(this.validarCampo("Nombre del director:",director)){
+                }if(this.validarLargoCadena("Nombre del director:",director,50)){}
+            }
+            valAnioEstreno(anioEstreno){
+                if(this.validarCampo){
+                    if(this.validarNumero("año de estreno",anioEstreno)){
+                    if(!/^([0-9]){4}$/.test(anioEstreno)) return console.warn(`el año tiene que tener un digito de 4 numeros enteros`);
+                    }
+                }
+            }
+            valPais(pais){
+                if(this.validarArreglo("pais(es) de estreno:",pais)){
+                }
+            }
+            valGen(genero){
+                if(this.validarArreglo("Genero",genero)){
+                 for (let generos of genero) {
+                    console.log(generos, Peliculas.generosAceptados.includes(generos)); //<=========== Valida si un objeto de array existe
+                    if(!(Peliculas.generosAceptados.includes(generos))) console.error(`el valor ${generos} no esta admitido`);                                                                //<=========== existe y valida en true o false              
+                        }    
+                    }
+                }
+            valCalificacion(calificacion){
+                if(this.validarNumero){
+                    return(this.calificacion < 1 || this.calificacion > 10)
+                    ? console.warn("la calificacion no puede ser menor a 1 o mayor a 10")
+                    : this.calificacion = calificacion.toFixed(1) 
+                }
+            }
+            Informacion(){
+            console.info(`Ficha Tecnica:\nTitulo:${this.titulo}\nDirector:${this.director}\nAño de Estreno:${this.anioEstreno}
+            \nPais(es):${this.pais.join(" ,")}\nGenero(s)${this.genero.join(" ,")}\nCalificacion:${this.calificacion}\nId:${this.id}`)
+            }
+        }
+        const pelis = new Peliculas ({
+            id: "tt1234567",
+            titulo: "la araña Patu Dona",
+            director: "Benito Camelo",
+            anioEstreno: 2020,
+            pais: ["Argentina,Mexico,Perú,Chile"],
+            genero: ["Sport"],
+            calificacion: 9.2
+        })
+        
+        
+        const misPeliculas = [{
+            id: "te1928398",
+            titulo: "la araña Patu Dona",
+            director: "Benito Camelo",
+            anioEstreno: 2020,
+            pais: ["Argentina,Mexico,Perú,Chile"],
+            genero: ["Sport"],
+            calificacion: 9.2
+        },
+        {
+            id: "tt1234567",
+            titulo: "El chango",
+            director: "simon",
+            anioEstreno: 2010,
+            pais: ["Mexico,Perú,Chile"],
+            genero: ["Action"],
+            calificacion: 3.6
+        },
+        {
+            id: "op1029387",
+            titulo: "Si se me pega voy a darle",
+            director: "ratata tata",
+            anioEstreno: 2005,
+            pais: ["Argentina,Mexico,Perú,Chile,Venezuela"],
+            genero: ["Musical"],
+            calificacion: 6
+        }]
+        
+        pelis.Informacion()
+
+        misPeliculas.forEach(el => new Peliculas(el).Informacion()); //<======= el = misPeliculas donde new Peliculas es la clase 
+                                                                     //(el) es lo que se itera e informacion es el que agrupa el objeto
+
+        
+
+
+        
+                                 
+
+    // La clase recibirá un objeto al momento de instanciarse con los siguentes datos: id de la película en IMDB:
+    // titulo, director, año de estreno, país o países de origen, géneros y calificación en IMBD.
+    // - Todos los datos del objeto son obligatorios.
+    // - Valida que el id IMDB tenga 9 caracteres, los primeros 2 sean letras y los 
+    // 7 restantes números.
+    // - Valida que el título no rebase los 100 caracteres.
+    // - Valida que el director no rebase los 50 caracteres.
+    // - Valida que el año de estreno sea un número entero de 4 dígitos.
+    // - Valida que el país o paises sea introducidos en forma de arreglo.
+    // - Valida que los géneros sean introducidos en forma de arreglo.
+    // - Valida que los géneros introducidos esten dentro de los géneros 
+    // aceptados*.
+    // - Crea un método estático que devuelva los géneros aceptados*.
+    // - Valida que la calificación sea un número entre 0 y 10 pudiendo ser 
+    // decimal de una posición.
+    // - Crea un método que devuelva toda la ficha técnica de la película.
+    // - Apartir de un arreglo con la información de 3 películas genera 3 
+    // instancias de la clase de forma automatizada e imprime la ficha técnica 
+    // de cada película.
+
+    // * Géneros Aceptados: Action, Adult, Adventure, Animation, Biography, Comedy, Crime, Documentary ,Drama, Family,
+    //Fantasy, Film Noir, Game-Show, History, Horror, Musical, Music, Mystery, News, Reality-TV, Romance, Sci-Fi, Short, 
+    //Sport, Talk-Show, Thriller, War, Western.
+        
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
